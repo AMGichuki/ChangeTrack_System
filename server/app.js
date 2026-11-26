@@ -1,4 +1,4 @@
-// Builds the Express app: settings, routes and error handling.
+// Builds the Express app: settings, routes and error handling to avoid corrupting 
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
@@ -19,7 +19,7 @@ const app = express();
 // address, so the sign-in limits count each visitor separately.
 if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 
-// Basic browser security settings for every reply.
+// Basic browser security settings for every reply done 
 app.disable('x-powered-by'); // do not advertise that we use Express
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff'); // do not guess file types
