@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { ROLE_LABEL, ROLE_MENU } from '../config/roles'
 import TopbarUser from './TopbarUser'
+import ThemeToggle from './ThemeToggle'
 
 export default function StaffLayout() {
   const { user, logout } = useAuth()
@@ -18,6 +19,7 @@ export default function StaffLayout() {
       <header className="topbar">
         <span className="brand">CHANGETRACK</span>
         <span className="topbar-title">Grade change workflow</span>
+        <ThemeToggle />
         <TopbarUser name={user.full_name} role={user.job_title || ROLE_LABEL[user.role]} onSignOut={logout} />
       </header>
 

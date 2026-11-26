@@ -21,6 +21,7 @@ import LecturerRequestPage from './pages/lecturer/LecturerRequestPage'
 import ReviewQueuePage from './pages/review/ReviewQueuePage'
 import ReviewHistoryPage from './pages/review/ReviewHistoryPage'
 import StudentTrackerPage from './pages/student/StudentTrackerPage'
+import { ThemeProvider } from './context/ThemeProvider'
 
 // Every staff screen from the wireframes. Pages with a "page" are built;
 // the rest show a placeholder until the sprint that builds them.
@@ -51,40 +52,42 @@ function HomeRedirect() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/signin" element={<SignInPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/" element={<HomeRedirect />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/" element={<HomeRedirect />} />
 
-          {/* Staff screens: each page only opens for its own role */}
-          {STAFF_PAGES.map((page) => (
-            <Route key={page.path} element={<ProtectedRoute roles={[page.role]} />}>
+            {/* Staff screens: each page only opens for its own role */}
+            {STAFF_PAGES.map((page) => (
+              <Route key={page.path} element={<ProtectedRoute roles={[page.role]} />}>
+                <Route element={<StaffLayout />}>
+                  <Route path={page.path} element={page.page ? <page.page /> : <PlaceholderPage {...page} />} />
+                </Route>
+              </Route>
+            ))}
+
+            {/* Acting approver: any staff member the Admin has set to act for a Chair, Dean or Registrar today */}
+            <Route element={<ProtectedRoute roles={['CHAIR', 'DEAN', 'REGISTRAR']} allowActing />}>
               <Route element={<StaffLayout />}>
-                <Route path={page.path} element={page.page ? <page.page /> : <PlaceholderPage {...page} />} />
+                <Route path="/acting/:approverId" element={<ReviewQueuePage />} />
               </Route>
             </Route>
-          ))}
 
-          {/* Acting approver: any staff member the Admin has set to act for a Chair, Dean or Registrar today */}
-          <Route element={<ProtectedRoute roles={['CHAIR', 'DEAN', 'REGISTRAR']} allowActing />}>
-            <Route element={<StaffLayout />}>
-              <Route path="/acting/:approverId" element={<ReviewQueuePage />} />
+            {/* Student screen */}
+            <Route element={<ProtectedRoute roles={['STUDENT']} />}>
+              <Route element={<StudentLayout />}>
+                <Route path="/student" element={<StudentTrackerPage />} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* Student screen */}
-          <Route element={<ProtectedRoute roles={['STUDENT']} />}>
-            <Route element={<StudentLayout />}>
-              <Route path="/student" element={<StudentTrackerPage />} />
-            </Route>
-          </Route>
-
-          <Route path="*" element={<HomeRedirect />} />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+            <Route path="*" element={<HomeRedirect />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
