@@ -1,0 +1,12 @@
+{
+  "name": "changetrack",
+  "private": true,
+  "description": "ChangeTrack: online grade change approval (React client + Express API in one deployment)",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "build": "npm ci --prefix client --include=dev && npm run build --prefix client && npm ci --prefix server --omit=dev",
+    "start": "node server/index.js"
+  }
+}

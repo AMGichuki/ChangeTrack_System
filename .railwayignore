@@ -1,0 +1,7 @@
+# Never upload secrets or local files to Railway
+.env
+.env.*
+!.env.example
+node_modules/
+client/dist/
+*.log

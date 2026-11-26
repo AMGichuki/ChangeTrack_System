@@ -1,0 +1,23 @@
+# Packages (reinstall with npm install)
+node_modules/
+
+# Secrets - never push these
+.env
+.env.*
+!.env.example
+
+# Build output and logs
+dist/
+*.log
+
+# Editor / OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Vercel project link (made by the Vercel tool)
+.vercel
+
+.vercel
+.env*
+!**/.env.example
