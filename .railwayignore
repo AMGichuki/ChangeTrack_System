@@ -1,4 +1,4 @@
-# Never upload secrets or local files to Railway
+# Never upload secrets or local files to Railway . 
 .env
 .env.*
 !.env.example
